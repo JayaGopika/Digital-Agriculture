@@ -1,0 +1,242 @@
+Build a complete mobile application called "AgriBridge" that runs in Expo Go using React Native (Expo framework).
+
+Use the provided AgriBridge logo in the splash screen and login page.
+
+This app connects farmers directly with customers and also allows farmers to book cold storage for perishable goods.
+
+Important Requirements
+
+• The app must run in Expo Go
+• Use React Native with Expo for frontend
+• Use Node.js + Express for backend
+• Use Firebase Firestore as the default database
+• Use Firebase Authentication for login
+• Include Speech to Text for product input
+• Do NOT include voice control navigation
+• Implement Push Notifications using Firebase Cloud Messaging
+• Also send email notifications to Gmail when orders or bookings happen
+
+App Roles
+
+The application must support role-based login.
+
+Roles:
+
+• Farmer
+• Customer
+• Cold Storage Manager
+
+After login, redirect users to the correct dashboard.
+
+App Screens
+Splash Screen
+
+• Show AgriBridge logo
+• Redirect to login after 3 seconds
+
+Authentication
+
+Login / Register
+
+Options:
+
+• Email login
+• Phone OTP login
+
+User selects role:
+
+• Farmer
+• Customer
+• Cold Storage Manager
+
+Farmer Module
+
+Farmer Dashboard
+
+Display:
+
+• Total products
+• Orders received
+• Earnings
+• Storage bookings
+
+Features:
+
+Add Product
+
+• Product name
+• Price
+• Quantity
+• Image upload
+• Category
+
+Include speech-to-text input for product entry so farmers can speak product details.
+
+My Products
+
+• View products
+• Edit products
+• Delete products
+
+Orders Received
+
+• View customer orders
+• Update order status
+
+Cold Storage Booking
+
+• View storage centers
+• Check availability
+• Book storage space
+
+Payments
+
+• Payment history
+• Total earnings
+
+Profile
+
+• Farm details
+• Contact information
+• Location
+
+Customer Module
+
+Customer Dashboard
+
+Browse Products
+
+• Filter by category
+• Filter by price
+• Filter by location
+
+Product Details
+
+• Product image
+• Farmer details
+• Price
+
+Cart
+
+Checkout
+
+Payment
+
+Use Razorpay payment gateway
+
+Order Tracking
+
+• Pending
+• Packed
+• Shipped
+• Delivered
+
+Order History
+
+Ratings and Reviews
+
+Cold Storage Manager Module
+
+Storage Dashboard
+
+• Total capacity
+• Available space
+
+Update Storage Availability
+
+Booking Requests
+
+• Accept booking
+• Reject booking
+
+Payment Status
+
+Profile
+
+Cold Storage Page
+
+Create a Cold Storage Page where farmers can:
+
+• View available cold storage centers
+• Check storage capacity
+• View price per kg/day
+• Send booking requests
+
+Storage owners receive booking notifications.
+
+Push Notifications
+
+Use Firebase Cloud Messaging.
+
+Send notifications when:
+
+• New order placed
+• Order status updated
+• Cold storage booking request
+• Booking approved or rejected
+
+Also send Gmail email notifications for these events.
+
+Database Structure (Firestore)
+
+Collections:
+
+farmers
+customers
+products
+orders
+coldStorage
+transactions
+
+Each collection should store relevant user, order, and product information.
+
+Backend APIs (Node.js Express)
+
+Authentication
+
+POST /register
+POST /login
+
+Products
+
+GET /products
+POST /addProduct
+PUT /updateProduct
+DELETE /deleteProduct
+
+Orders
+
+POST /placeOrder
+GET /orders
+PUT /updateOrderStatus
+
+Cold Storage
+
+GET /storageCenters
+POST /bookStorage
+PUT /approveBooking
+
+Payments
+
+POST /payment
+
+UI Requirements
+
+• Green agriculture theme
+• Clean mobile design
+• Responsive React Native UI
+• Compatible with Expo Go
+
+Output
+
+Generate:
+
+• Full React Native Expo project
+• Node.js Express backend
+• Firebase integration
+• Push notification setup
+• Speech-to-text integration
+• Cold storage booking system
+• Payment system
+
+Provide instructions to run the project in Expo Go.

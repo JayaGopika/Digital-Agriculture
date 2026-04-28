@@ -1,0 +1,190 @@
+Fix and rebuild my AgriBridge mobile application so it works correctly in Expo Go using React Native.
+
+Current problems to fix:
+
+Email, password, and UI icons are not visible.
+
+After creating an account, login does not redirect to the dashboard.
+
+Navigation between screens is broken.
+
+Admin dashboard is missing.
+
+Required Stack
+
+Frontend
+React Native with Expo
+
+Backend
+Node.js with Express
+
+Database
+Firebase Firestore
+
+Authentication
+Firebase Authentication
+
+Push Notifications
+Firebase Cloud Messaging
+
+Email Notifications
+Send Gmail alerts when orders or storage bookings occur.
+
+Fix Icons Issue
+
+Install and configure icon libraries correctly.
+
+Use:
+
+@expo/vector-icons
+
+react-native-vector-icons
+
+Example icons:
+
+Email icon
+Password icon
+User icon
+Cart icon
+Notification icon
+Settings icon
+
+Ensure icons render properly in all screens.
+
+Fix Authentication Flow
+
+Correct the login and registration system using Firebase Authentication.
+
+Steps:
+
+User registers with email and password.
+
+User account is saved in Firebase Authentication.
+
+User role is stored in Firestore.
+
+Roles:
+
+• Farmer
+• Customer
+• Cold Storage Manager
+• Admin
+
+After login, the app must redirect automatically to the correct dashboard based on role.
+
+Navigation Fix
+
+Use React Navigation.
+
+Install and configure:
+
+react-navigation
+stack navigator
+bottom tab navigator
+
+Navigation flow:
+
+Splash Screen → Login/Register → Role Based Dashboard
+
+Add Admin Dashboard
+
+Create a full Admin Panel inside the app.
+
+Admin features:
+
+Dashboard stats:
+
+• Total farmers
+• Total customers
+• Total products
+• Total orders
+• Total cold storage centers
+
+Admin pages:
+
+Manage Users
+• View farmers
+• View customers
+• Block users
+
+Manage Products
+• View all products
+• Delete products
+
+Manage Orders
+• View all orders
+• Update status
+
+Manage Cold Storage
+• Add storage center
+• Update capacity
+• Delete storage
+
+Reports
+
+• Total revenue
+• Order statistics
+
+Cold Storage Module
+
+Farmers can:
+
+• View nearby storage centers
+• See storage price
+• Check availability
+• Send booking request
+
+Storage managers can:
+
+• Approve booking
+• Reject booking
+• Update storage capacity
+
+Push Notifications
+
+Use Firebase Cloud Messaging.
+
+Send notifications for:
+
+• New order placed
+• Order status update
+• Cold storage booking request
+• Booking approval
+
+Also send Gmail email notifications for these events.
+
+UI Fix
+
+Improve UI so all components display correctly.
+
+Requirements:
+
+• Icons visible
+• Clean layout
+• Green agriculture theme
+• Mobile responsive
+
+Firestore Database Collections
+
+users
+products
+orders
+coldStorage
+transactions
+
+Store user role inside the users collection.
+
+Deliverables
+
+Generate a fully working project that includes:
+
+• React Native Expo mobile app
+• Node.js Express backend
+• Firebase Authentication
+• Firestore database
+• Push notifications
+• Gmail email notifications
+• Admin dashboard
+• Cold storage module
+
+The project must run correctly in Expo Go without errors.

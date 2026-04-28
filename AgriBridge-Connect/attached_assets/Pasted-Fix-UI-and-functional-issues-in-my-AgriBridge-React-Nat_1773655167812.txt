@@ -1,0 +1,146 @@
+Fix UI and functional issues in my AgriBridge React Native Expo mobile app.
+
+1. Product Details Page UI
+
+Problem: Bottom buttons are not visible and page is cut.
+
+Fix:
+
+Wrap the entire page in SafeAreaView
+
+Use ScrollView so users can scroll the page
+
+Ensure bottom tab navigation does not hide content
+
+Make the screen fully mobile responsive
+
+Expected result:
+Users can scroll and see all buttons.
+
+2. Call Button Function
+
+When the user taps the call icon on the farmer card:
+
+Display the farmer’s phone number
+
+Use React Native Linking.openURL("tel:farmerPhoneNumber")
+
+If calling is not supported, show the number in an alert popup
+
+Example popup:
+
+Farmer Phone: +91XXXXXXXXXX
+
+3. Payment Not Showing After Order
+
+Problem: After placing order, payment option is missing.
+
+Fix:
+
+Order flow must be:
+
+Cart → Checkout → Payment → Order Confirmation
+
+Add payment using Razorpay.
+
+Steps:
+
+Customer clicks Place Order
+
+Razorpay payment screen opens
+
+After payment success:
+
+Save order in Firestore
+
+Show message:
+
+Payment Successful
+Order Placed
+
+4. Farmer Orders Page
+
+Problem: Mark as Read button not working.
+
+Fix:
+
+When farmer presses Mark as Read:
+
+Update Firestore field:
+
+orderStatusSeen = true
+
+Remove notification badge
+
+Update UI instantly.
+
+5. Cold Storage Payment for Farmers
+
+Current problem:
+After storage manager accepts storage request, farmer cannot pay.
+
+Fix:
+
+Add Cold Storage Payment Page.
+
+Flow:
+
+Farmer → Storage Request Accepted → Payment Screen
+
+Display:
+
+Storage Center Name
+Price per KG
+Booked Quantity
+Total Amount
+
+Example:
+
+Price: ₹5/kg
+Quantity: 100kg
+Total: ₹500
+
+Add Pay Now button using Razorpay.
+
+After payment:
+
+Update booking:
+
+paymentStatus = "Paid"
+bookingStatus = "Confirmed"
+
+Save transaction in transactions collection.
+
+6. Firestore Updates
+
+Ensure these fields exist:
+
+orders
+
+status
+seenByFarmer
+
+storageRequests
+
+status
+pricePerKg
+quantity
+totalAmount
+paymentStatus
+
+transactions
+
+userId
+amount
+paymentType
+timestamp
+
+Expected Result
+
+After fixes:
+
+• Product page scrolls correctly
+• Call icon shows phone number
+• Payment screen appears during checkout
+• Farmer Mark as Read works
+• Cold storage payment works after approval.

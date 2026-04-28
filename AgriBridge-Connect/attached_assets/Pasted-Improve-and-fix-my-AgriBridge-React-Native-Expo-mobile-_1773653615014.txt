@@ -1,0 +1,158 @@
+Improve and fix my AgriBridge React Native Expo mobile app. Some pages are incomplete and some features are missing.
+
+1. Fix Customer Dashboard Layout
+
+Problem: Customer pages are not fully visible and UI is cut off.
+
+Fix:
+
+Use SafeAreaView
+
+Use ScrollView for product pages
+
+Ensure bottom tab navigation does not hide content
+
+Make the UI responsive for all mobile screens
+
+Tabs should be:
+
+Browse
+Cart
+Orders
+Profile
+
+2. Add Complete Checkout System
+
+Create a Checkout Page with:
+
+Delivery Address
+
+Order Summary
+
+Total Price
+
+Place Order Button
+
+3. Payment Integration
+
+Add payment using Razorpay.
+
+Flow:
+
+Customer → Checkout → Razorpay Payment → Order Confirmed
+
+After payment:
+
+• Save order in Firestore orders collection
+• Show confirmation message
+Payment successful
+
+4. Order Tracking System
+
+Add order status tracking.
+
+Order statuses:
+
+Pending
+Packed
+Shipped
+Delivered
+
+Customer should see the status in Orders Page.
+
+5. Order History
+
+Add Order History Page showing:
+
+Product
+
+Price
+
+Farmer
+
+Order date
+
+Status
+
+6. Ratings and Reviews
+
+Customers can rate products after delivery.
+
+Fields:
+
+Rating (1–5 stars)
+Comment
+
+Save reviews in Firestore reviews collection.
+
+7. Cold Storage Payment
+
+When farmer books cold storage:
+
+Show storage price
+
+Allow farmer to pay using Razorpay
+
+After payment:
+
+Save payment record
+
+Update booking status to confirmed
+
+Add Payment Status field in storage bookings.
+
+Statuses:
+
+Pending
+Paid
+Failed
+
+8. Push Notifications
+
+Implement notifications using Firebase Cloud Messaging.
+
+Send notifications for:
+
+• New order placed
+• Order status updated
+• Cold storage booking request
+• Booking approved
+• Booking rejected
+
+9. Gmail Email Notifications
+
+Send email alerts using Node backend.
+
+Send email when:
+
+• Order placed
+• Order shipped
+• Cold storage booking request
+• Storage approved or rejected
+• Payment completed
+
+Use Gmail SMTP service.
+
+10. Firestore Collections
+
+Ensure these collections exist:
+
+users
+products
+orders
+reviews
+coldStorage
+storageRequests
+transactions
+
+Expected Result
+
+After fixes:
+
+• Customer dashboard fully visible
+• Checkout and Razorpay payment working
+• Order tracking system active
+• Ratings and reviews enabled
+• Cold storage payment added
+• Push notifications working
+• Gmail email notifications sent for all major events.

@@ -1,0 +1,1131 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: AgriBridge API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication
+  - name: products
+    description: Products management
+  - name: orders
+    description: Orders management
+  - name: coldStorage
+    description: Cold storage management
+  - name: reviews
+    description: Reviews and ratings
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: Registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+
+  /products:
+    get:
+      operationId: getProducts
+      tags: [products]
+      summary: Get all available products
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: location
+          in: query
+          schema:
+            type: string
+        - name: farmerId
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductWithFarmer"
+
+  /products/my:
+    get:
+      operationId: getMyProducts
+      tags: [products]
+      summary: Get my products (farmer only)
+      responses:
+        "200":
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+
+  /products/{id}:
+    get:
+      operationId: getProduct
+      tags: [products]
+      summary: Get a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductWithFarmer"
+
+    put:
+      operationId: updateProduct
+      tags: [products]
+      summary: Update a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductRequest"
+      responses:
+        "200":
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+    delete:
+      operationId: deleteProduct
+      tags: [products]
+      summary: Delete a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /products/add:
+    post:
+      operationId: addProduct
+      tags: [products]
+      summary: Add a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddProductRequest"
+      responses:
+        "200":
+          description: Created product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /orders:
+    get:
+      operationId: getOrders
+      tags: [orders]
+      summary: Get orders for current user
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderWithDetails"
+
+  /orders/place:
+    post:
+      operationId: placeOrder
+      tags: [orders]
+      summary: Place a new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlaceOrderRequest"
+      responses:
+        "200":
+          description: Order placed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/{id}/status:
+    put:
+      operationId: updateOrderStatus
+      tags: [orders]
+      summary: Update order status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderStatusRequest"
+      responses:
+        "200":
+          description: Updated order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /storage:
+    get:
+      operationId: getStorageCenters
+      tags: [coldStorage]
+      summary: Get all cold storage centers
+      responses:
+        "200":
+          description: List of storage centers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ColdStorageWithManager"
+
+  /storage/bookings:
+    get:
+      operationId: getStorageBookings
+      tags: [coldStorage]
+      summary: Get storage bookings for current user
+      responses:
+        "200":
+          description: List of bookings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookingWithDetails"
+
+  /storage/book:
+    post:
+      operationId: bookStorage
+      tags: [coldStorage]
+      summary: Book cold storage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookStorageRequest"
+      responses:
+        "200":
+          description: Booking created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /storage/bookings/{id}/approve:
+    put:
+      operationId: approveBooking
+      tags: [coldStorage]
+      summary: Approve or reject a booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApproveBookingRequest"
+      responses:
+        "200":
+          description: Updated booking
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Booking"
+
+  /storage/my:
+    get:
+      operationId: getMyStorage
+      tags: [coldStorage]
+      summary: Get storage centers managed by current user
+      responses:
+        "200":
+          description: List of storage centers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ColdStorage"
+    post:
+      operationId: createStorage
+      tags: [coldStorage]
+      summary: Create a cold storage center
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStorageRequest"
+      responses:
+        "200":
+          description: Created storage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColdStorage"
+
+  /reviews/{productId}:
+    get:
+      operationId: getProductReviews
+      tags: [reviews]
+      summary: Get reviews for a product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReviewWithCustomer"
+
+  /reviews:
+    post:
+      operationId: addReview
+      tags: [reviews]
+      summary: Add a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddReviewRequest"
+      responses:
+        "200":
+          description: Created review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  /users/profile:
+    get:
+      operationId: getProfile
+      tags: [auth]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    put:
+      operationId: updateProfile
+      tags: [auth]
+      summary: Update user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /users/fcm-token:
+    put:
+      operationId: updateFcmToken
+      tags: [auth]
+      summary: Update FCM push notification token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFcmTokenRequest"
+      responses:
+        "200":
+          description: Token updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /stats/farmer:
+    get:
+      operationId: getFarmerStats
+      tags: [auth]
+      summary: Get farmer dashboard stats
+      responses:
+        "200":
+          description: Farmer stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FarmerStats"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+          enum: [farmer, customer, storage_manager]
+        farmName:
+          type: string
+        location:
+          type: string
+      required:
+        - email
+        - password
+        - name
+        - role
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserProfile"
+      required:
+        - token
+        - user
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        role:
+          type: string
+        location:
+          type: string
+        farmName:
+          type: string
+        bio:
+          type: string
+        profileImage:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - email
+        - name
+        - role
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        location:
+          type: string
+        farmName:
+          type: string
+        bio:
+          type: string
+        profileImage:
+          type: string
+
+    UpdateFcmTokenRequest:
+      type: object
+      properties:
+        fcmToken:
+          type: string
+      required:
+        - fcmToken
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+        farmerId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: string
+        quantity:
+          type: string
+        unit:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+        available:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - farmerId
+        - name
+        - price
+        - quantity
+        - unit
+        - category
+        - available
+
+    ProductWithFarmer:
+      type: object
+      properties:
+        id:
+          type: integer
+        farmerId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: string
+        quantity:
+          type: string
+        unit:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+        available:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        farmerName:
+          type: string
+        farmName:
+          type: string
+        farmerPhone:
+          type: string
+        averageRating:
+          type: number
+        reviewCount:
+          type: integer
+      required:
+        - id
+        - farmerId
+        - name
+        - price
+        - quantity
+        - unit
+        - category
+        - available
+
+    AddProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: number
+        unit:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+      required:
+        - name
+        - price
+        - quantity
+        - category
+
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: number
+        unit:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        location:
+          type: string
+        available:
+          type: boolean
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        farmerId:
+          type: integer
+        productId:
+          type: integer
+        quantity:
+          type: string
+        totalAmount:
+          type: string
+        status:
+          type: string
+        deliveryAddress:
+          type: string
+        notes:
+          type: string
+        paymentId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - customerId
+        - farmerId
+        - productId
+        - quantity
+        - totalAmount
+        - status
+
+    OrderWithDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        farmerId:
+          type: integer
+        productId:
+          type: integer
+        quantity:
+          type: string
+        totalAmount:
+          type: string
+        status:
+          type: string
+        deliveryAddress:
+          type: string
+        notes:
+          type: string
+        paymentId:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        productName:
+          type: string
+        productImage:
+          type: string
+        productCategory:
+          type: string
+        farmerName:
+          type: string
+        customerName:
+          type: string
+      required:
+        - id
+        - customerId
+        - farmerId
+        - productId
+        - quantity
+        - totalAmount
+        - status
+
+    PlaceOrderRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+        quantity:
+          type: number
+        deliveryAddress:
+          type: string
+        notes:
+          type: string
+        paymentId:
+          type: string
+      required:
+        - productId
+        - quantity
+
+    UpdateOrderStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [pending, packed, shipped, delivered, cancelled]
+      required:
+        - status
+
+    ColdStorage:
+      type: object
+      properties:
+        id:
+          type: integer
+        managerId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        totalCapacity:
+          type: string
+        availableCapacity:
+          type: string
+        pricePerKgPerDay:
+          type: string
+        temperature:
+          type: string
+        phone:
+          type: string
+        imageUrl:
+          type: string
+        available:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - managerId
+        - name
+        - location
+        - totalCapacity
+        - availableCapacity
+        - pricePerKgPerDay
+        - available
+
+    ColdStorageWithManager:
+      type: object
+      properties:
+        id:
+          type: integer
+        managerId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        totalCapacity:
+          type: string
+        availableCapacity:
+          type: string
+        pricePerKgPerDay:
+          type: string
+        temperature:
+          type: string
+        phone:
+          type: string
+        imageUrl:
+          type: string
+        available:
+          type: boolean
+        createdAt:
+          type: string
+        managerName:
+          type: string
+      required:
+        - id
+        - managerId
+        - name
+        - location
+        - totalCapacity
+        - availableCapacity
+        - pricePerKgPerDay
+        - available
+
+    CreateStorageRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        totalCapacity:
+          type: number
+        pricePerKgPerDay:
+          type: number
+        temperature:
+          type: string
+        phone:
+          type: string
+        imageUrl:
+          type: string
+      required:
+        - name
+        - location
+        - totalCapacity
+        - pricePerKgPerDay
+
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+        farmerId:
+          type: integer
+        storageId:
+          type: integer
+        managerId:
+          type: integer
+        productName:
+          type: string
+        quantity:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        totalCost:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - farmerId
+        - storageId
+        - managerId
+        - productName
+        - quantity
+        - startDate
+        - endDate
+        - status
+
+    BookingWithDetails:
+      type: object
+      properties:
+        id:
+          type: integer
+        farmerId:
+          type: integer
+        storageId:
+          type: integer
+        managerId:
+          type: integer
+        productName:
+          type: string
+        quantity:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        totalCost:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+        storageName:
+          type: string
+        storageLocation:
+          type: string
+        farmerName:
+          type: string
+      required:
+        - id
+        - farmerId
+        - storageId
+        - managerId
+        - productName
+        - quantity
+        - startDate
+        - endDate
+        - status
+
+    BookStorageRequest:
+      type: object
+      properties:
+        storageId:
+          type: integer
+        productName:
+          type: string
+        quantity:
+          type: number
+        startDate:
+          type: string
+        endDate:
+          type: string
+        notes:
+          type: string
+      required:
+        - storageId
+        - productName
+        - quantity
+        - startDate
+        - endDate
+
+    ApproveBookingRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [approved, rejected]
+      required:
+        - status
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        productId:
+          type: integer
+        orderId:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - customerId
+        - productId
+        - rating
+
+    ReviewWithCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+        customerId:
+          type: integer
+        productId:
+          type: integer
+        orderId:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
+        createdAt:
+          type: string
+        customerName:
+          type: string
+      required:
+        - id
+        - customerId
+        - productId
+        - rating
+
+    AddReviewRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+        orderId:
+          type: integer
+        rating:
+          type: integer
+        comment:
+          type: string
+      required:
+        - productId
+        - rating
+
+    FarmerStats:
+      type: object
+      properties:
+        totalProducts:
+          type: integer
+        totalOrders:
+          type: integer
+        totalEarnings:
+          type: number
+        storageBookings:
+          type: integer
+        pendingOrders:
+          type: integer
+      required:
+        - totalProducts
+        - totalOrders
+        - totalEarnings
+        - storageBookings
+        - pendingOrders
